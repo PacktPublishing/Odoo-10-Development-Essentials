@@ -1,0 +1,73 @@
+<odoo>
+
+    <!-- Extend form -->
+    <record id="view_form_todo_task_inherited" model="ir.ui.view">
+      <field name="name">view_form_todo_task_inherited</field>
+      <field name="model">todo.task</field>
+      <field name="inherit_id" ref="todo_app.view_form_todo_task"/>
+      <field name="arch" type="xml">
+
+        <field name="name" position="after">
+          <field name="user_id" />
+        </field>
+        <field name="is_done" position="before">
+          <field name="date_deadline" />
+        </field>
+        <field name="active" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+
+        <!-- Open Chatter widgets -->
+        <sheet position="after">
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" />
+                <field name="message_ids" widget="mail_thread" />
+            </div>
+        </sheet>
+
+      </field>
+    </record>
+
+    <!-- Extend list -->
+    <record id="view_tree_todo_task_inherited" model="ir.ui.view">
+      <field name="name">view_tree_todo_task_inherited</field>
+      <field name="model">todo.task</field>
+      <field name="inherit_id" ref="todo_app.view_tree_todo_task"/>
+      <field name="arch" type="xml">
+
+        <field name="name" position="after">
+          <field name="user_id" />
+        </field>
+
+      </field>
+    </record>
+
+    <!-- Extend search -->
+    <record id="view_filter_todo_task_inherited" model="ir.ui.view">
+      <field name="name">view_filter_todo_task_inherited</field>
+      <field name="model">todo.task</field>
+      <field name="inherit_id" ref="todo_app.view_filter_todo_task"/>
+      <field name="arch" type="xml">
+
+        <field name="name" position="after">
+          <field name="user_id" />
+          <filter name="filter_my_tasks" string="My Tasks"
+                  domain="[('user_id','in',[uid,False])]" />
+          <filter name="filter_not_assigned" string="Not Assigned"
+                  domain="[('user_id','=',False)]" />
+        </field>
+
+      </field>
+    </record>
+
+    <!-- Modify menu item -->
+    <record id="todo_app.menu_todo_task" model="ir.ui.menu">
+        <field name="name">My To-Do</field>
+    </record>
+
+    <!-- Action to open To-Do Task list -->
+    <record model="ir.actions.act_window" id="todo_app.action_todo_task">
+        <field name="context">{'search_default_filter_my_tasks': True}</field>
+    </record>
+
+</odoo>

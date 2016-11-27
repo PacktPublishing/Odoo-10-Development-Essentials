@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+    <record model="todo.task" id="todo_task_c">
+      <field name="name">Reinstall Odoo</field>
+      <field name="user_id" eval="ref('base.user_root')" />
+      <field name="date_deadline">2015-01-30</field>
+      <field name="is_done" eval="False" />
+    </record>
+</odoo>

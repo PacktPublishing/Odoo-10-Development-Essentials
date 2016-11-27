@@ -1,0 +1,52 @@
+<data>
+
+<!-- Actions for the menu items -->
+<act_window id="action_todo_stage"
+  name="To-Do Task Stages"
+  res_model="todo.task.stage"
+  view_mode="tree,form"
+  target="current"
+  context="{'default_state': 'open'}"
+  domain="[]"
+  limit="80"
+/>
+<act_window id="todo_app.action_todo_task"
+  name=" To-Do Tasks"
+  res_model="todo.task"
+  view_mode="tree,form,calendar,graph,pivot"
+  target="current"
+  context="{'search_default_filter_my_tasks': True}"
+/>
+<!-- Add option to the "More" button -->
+<act_window id="action_todo_task_stage"
+  name="To-Do Task Stages"
+  res_model="todo.task.stage"
+  src_model="todo.task" 
+  multi="False"
+/>
+
+<!-- Menu items -->
+<!-- Modify top menu item -->
+<menuitem id="todo_app.menu_todo_task"
+  name="To-Do" />
+
+<!-- App menu items -->
+<menuitem id="menu_todo_task_view"
+  name="Tasks"
+  parent="todo_app.menu_todo_task"
+  sequence="10"
+  action="todo_app.action_todo_task" />
+
+<menuitem id="menu_todo_config"
+  name="Configuration"
+  parent="todo_app.menu_todo_task"
+  sequence="100"
+  groups="base.group_system" />
+
+<menuitem id="menu_todo_task_stage"
+  name="Stages"
+  parent="menu_todo_config"
+  sequence="10"
+  action="action_todo_stage" />
+  
+</data>

@@ -1,0 +1,122 @@
+<odoo>
+
+<record id="paperformat_euro_landscape"
+        model="report.paperformat">
+    <field name="name">European A4 Landscape</field>
+    <field name="default" eval="True" />
+    <field name="format">A4</field>
+    <field name="page_height">0</field>
+    <field name="page_width">0</field>
+    <field name="orientation">Landscape</field>
+    <field name="margin_top">40</field>
+    <field name="margin_bottom">23</field>
+    <field name="margin_left">7</field>
+    <field name="margin_right">7</field>
+    <field name="header_line" eval="False" />
+    <field name="header_spacing">35</field>
+    <field name="dpi">90</field>
+</record>
+
+<report id="action_todo_task_report"
+        string="To-do Tasks"
+        model="todo.task"
+        report_type="qweb-html"
+        name="todo_report.report_todo_task_template"
+        paperformat="paperformat_euro_landscape"
+/>
+
+<template id="report_todo_task_template">
+  <t t-call="report.html_container">
+    <t t-call="report.external_layout">
+      <div class="page">
+         <p/>
+         <!-- Report page content -->
+         <div class="row bg-primary">
+            <div class="col-xs-3">
+              <span class="glyphicon glyphicon-pushpin" />
+              What
+            </div>
+            <div class="col-xs-2">Who</div>
+            <div class="col-xs-1">When</div>
+            <div class="col-xs-3">Where</div>
+            <div class="col-xs-3">Watchers</div>
+        </div>
+        <t t-set="follower_count" t-value="0" /><!-- Running total-->
+        <t t-foreach="docs" t-as="o">
+          <div class="row">
+              <div class="col-xs-3">
+                  <h4><span t-field="o.name" /></h4>
+              </div>
+              <div class="col-xs-2">
+                  <span t-field="o.user_id" />
+              </div>
+              <div class="col-xs-1">
+                  <span t-field="o.date_deadline" />
+                  <span t-field="o.amount_cost"
+                        t-field-options='{
+                          "widget": "monetary",
+                          "display_currency": "o.currency_id"}'/>
+              </div>
+              <div class="col-xs-3">
+                  <div t-field="res_company.partner_id"
+                       t-field-options='{
+                         "widget": "contact",
+                         "fields": ["address", "name", "phone", "fax"],
+                         "no_marker": true}' />
+              </div>
+              <div class="col-xs-3">
+                <ul class="media-list">
+                    <t t-foreach="o.message_follower_ids" t-as="f">
+                      <li t-if="f.partner_id.image_small" class="media-left">
+                        <img class="media-object"
+                             t-att-src="'data:image/png;base64,%s' % f.partner_id.image_small"
+                             style="max-height: 24px;" />
+                        <span class="media-body" t-field="f.partner_id.name" />
+                      </li>
+                    </t>
+                </ul>
+
+                <!-- Running total-->
+                <t t-set="follower_count"
+                    t-value="follower_count + len(o.message_follower_ids)" />
+                Accumulated #
+                <t t-esc="follower_count" />
+
+              </div>
+          </div>
+        </t>
+        <!-- Totals -->
+        <div class="row">
+            <div class="col-xs-3">
+              Count: <t t-esc="len(docs)" />
+            </div>
+            <div class="col-xs-2" />
+            <div class="col-xs-1">
+              Total: <t t-esc="sum([o.amount_cost for o in docs])" />
+            </div>
+            <div class="col-xs-3" />
+            <div class="col-xs-3" />
+        </div>
+
+      </div>
+    </t>
+  </t>
+</template>
+
+
+<report id="action_todo_task_report_translated"
+        string="Translated To-do Tasks"
+        model="todo.task"
+        report_type="qweb-pdf"
+        name="todo_report.report_todo_task_translated"
+        paperformat="paperformat_euro_landscape"
+/>
+
+<template id="report_todo_task_translated">
+    <t t-call="todo_report.report_todo_task_template"
+       t-lang="user.lang" >
+       <t t-set="docs" t-value="docs.with_context({'lang': user.lang})" />
+    </t>
+</template>
+
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- To-Do Task Form view -->
+    <record id="view_form_todo_task" model="ir.ui.view">
+      <field name="name">To-do Task Form</field>
+      <field name="model">todo.task</field>
+      <field name="arch" type="xml">
+
+        <form>
+          <header>
+            <button name="do_toggle_done" type="object"
+                    string="Toggle Done" class="oe_highlight"/>
+            <button name="do_clear_done" type="object"
+                    string="Clear All Done" />
+          </header>
+          <sheet>
+            <group name="group_top">
+              <group name="group_left">
+                <field name="name"/>
+              </group>
+              <group name="group_right">
+                <field name="is_done"/>
+                <field name="active" readonly="1"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+
+      </field>
+    </record>
+
+    <!-- To-Do Task List view -->
+    <record id="view_tree_todo_task" model="ir.ui.view">
+      <field name="name">To-do Task Tree</field>
+      <field name="model">todo.task</field>
+      <field name="arch" type="xml">
+        <tree colors="decoration-muted: is_done==True">
+          <field name="name"/>
+          <field name="is_done"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- To-Do Task Search view -->
+    <record id="view_filter_todo_task" model="ir.ui.view">
+      <field name="name">To-do Task Filter</field>
+      <field name="model">todo.task</field>
+      <field name="arch" type="xml">
+        <search>
+          <field name="name"/>
+          <filter string="Not Done" domain="[('is_done','=',False)]"/>
+          <filter string="Done" domain="[('is_done','!=',False)]"/>
+        </search>
+      </field>
+    </record>
+
+</odoo>

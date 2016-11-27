@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+    <record id="todo_task_user_rule" model="ir.rule">
+      <field name="name">ToDo Tasks only for owner</field>
+      <field name="model_id" ref="model_todo_task"/>
+      <field name="domain_force">[('create_uid','=',user.id)]
+      </field>
+      <field name="groups" eval="[(4,ref('base.group_user'))]"/>
+    </record>
+  </data>
+</odoo>

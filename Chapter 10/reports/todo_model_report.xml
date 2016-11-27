@@ -1,0 +1,42 @@
+<odoo>
+
+<report id="action_todo_model_report"
+        string="To-do Special Report"
+        model="todo.task"
+        report_type="qweb-html"
+        name="todo_report.report_todo_task_special"
+/>
+
+<template id="report_todo_task_special">
+  <t t-call="report.html_container">
+    <t t-call="report.external_layout">
+      <div class="page">
+
+        <!-- Report page content -->
+        <table class="table table-stripped">
+          <tr>
+            <th>Title</th>
+            <th>Owner</th>
+            <th>Deadline</th>
+          </tr>
+        <t t-foreach="docs" t-as="o">
+          <tr>
+              <td class="col-xs-6">
+                  <span t-field="o.name" />
+              </td>
+              <td class="col-xs-3">
+                  <span t-field="o.user_id" />
+              </td>
+              <td class="col-xs-3">
+                  <span t-field="o.date_deadline" />
+              </td>
+          </tr>
+        </t>
+        </table>
+
+      </div>
+    </t>
+  </t>
+</template>
+
+</odoo>

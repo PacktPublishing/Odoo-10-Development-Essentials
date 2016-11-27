@@ -1,0 +1,164 @@
+<odoo>
+
+<!-- TODO: Add calendar view? graph?-->
+
+    <!-- Add Kanban view mode to the menu Action: -->
+    <act_window id="todo_app.action_todo_task"
+        name="To-Do Tasks"
+        res_model="todo.task"
+        view_mode="kanban,tree,form,pivot"
+        context="{'search_default_filter_my_tasks': True}"
+    />
+
+    <!-- Add Kanban view -->
+    <record id="To-do Task Kanban" model="ir.ui.view">
+      <field name="model">todo.task</field>
+      <field name="arch" type="xml">
+
+<!-- The Kanban goes here! -->
+<kanban default_group_by="stage_id"
+        class="o_kanban_small_column" >
+  <!-- Fields to use in expressions... -->
+  <field name="stage_id" />
+  <field name="color" />
+  <field name="kanban_state" />
+  <field name="priority" />
+  <field name="is_done" />
+  <field name="message_partner_ids" />
+  <!-- ...add other used fields -->
+  <templates>
+
+    <t t-name="follower_avatars">
+    <div>
+      <t t-foreach="record.message_partner_ids.raw_value.slice(0, arg_max)"
+         t-as="rec">
+        <img t-att-src="kanban_image(
+             'res.partner', 'image_small', rec)"
+             class="oe_avatar"
+             width="24" height="24" />
+      </t>
+    </div>
+    </t>
+
+    <!-- Define the kanban-box template -->
+    <t t-name="kanban-box">
+      <!-- Set the Kanban Card color: -->
+      <div t-attf-class="#{kanban_color(record.color.raw_value)}
+                         oe_kanban_global_click">
+        <div class="o_dropdown_kanban dropdown">
+            <!-- Top-right drop down menu here... -->
+            <a class="dropdown-toggle btn"
+               data-toggle="dropdown" href="#">
+              <span class="fa fa-bars fa-lg"/>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <!-- Edit and Delete actions, if available: -->
+              <t t-if="widget.editable">
+                <li><a type="edit">Edit</a></li>
+              </t>
+              <t t-if="widget.deletable">
+                <li><a type="delete">Delete</a></li>
+              </t>
+              <!-- Call a server-side Model method: -->
+              <t t-if="!record.is_done.value">
+                <li><a name="do_toggle_done" type="object">Set as Done</a></li>
+              </t>
+              <!-- Color picker option: -->
+              <li>
+                  <ul class="oe_kanban_colorpicker"
+                      data-field="color"/>
+              </li>
+            </ul>
+
+        </div>
+        <div class="oe_kanban_content">
+
+            <!-- Content elements and fields go here... -->
+            <div>
+              <field name="tag_ids" />
+            </div>
+            
+            <div>
+              <strong>
+                <a type="open"><field name="name" /></a>
+              </strong>
+            </div>
+            
+            <ul>
+                <li>
+                  <field name="user_id" />
+                </li>
+                <li t-att-class="red_or_black">
+                    <field name="date_deadline" />
+                </li>
+                <!--
+                <li t-attf-class="oe_kanban_text{{
+                       record.date_deadline.raw_value and
+                       !(record.date_deadline.raw_value > (new Date()))
+                       ? '_red' : '_black' }}" >
+                     <field name="date_deadline" />
+                </li>
+                -->
+                <!--
+                <t t-set="red_or_black" t-value="
+                    record.date_deadline.raw_value and
+                    record.date_deadline.raw_value lte (new Date())
+                    ? 'oe_kanban_text_red' : ''" />
+                -->
+                <!--
+                <t t-if="record.effort_estimate.raw_value gt 0">
+                  <li>Estimate <field name="effort_estimate"/></li>
+                </t>
+                -->
+            </ul>
+            
+            
+            <div class="oe_kanban_footer">
+
+              <div>
+                <!-- Left hand footer... -->
+                <field name="priority" widget="priority"/>
+                <t t-call="follower_avatars">
+                  <t t-set="arg_max" t-value="3" />
+                </t>
+
+              </div>
+              
+              <div>
+                <!-- Right hand footer... -->
+                <field name="kanban_state"
+                       widget="kanban_state_selection"/>
+                <img t-att-title="record.user_id.value"
+                     t-att-src="kanban_image(
+                         'res.users', 'image_small',
+                          record.user_id.raw_value)"
+                     width="24" height="24"
+                     class="oe_kanban_avatar pull-right" />
+
+              </div>
+            </div>
+
+        </div><!-- oe_kanban_content -->
+        <div class="oe_clear"/>
+      </div><!-- kanban color -->
+    </t>
+  </templates>
+</kanban>
+
+      </field>
+    </record>
+
+
+    <!-- Inheritance -->
+    <record id="res_partner_kanban_inherir" model="ir.ui.view">
+      <field name="name">Contact Kanban modification</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.res_partner_kanban_view" />
+      <field name="arch" type="xml">
+        <xpath expr="//t[@t-name='kanban-box']//field[@name='display_name']" position="before">
+          <span>Name:</span>
+        </xpath>
+      </field>
+    </record>
+
+</odoo>
