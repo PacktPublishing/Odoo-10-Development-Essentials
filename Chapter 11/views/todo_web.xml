@@ -1,0 +1,122 @@
+<odoo>
+
+<template id="assets_frontend" inherit_id="website.assets_frontend" name="todo_website_assets">
+  <xpath expr="." position="inside">
+    <link rel='stylesheet' type="text/css" href='/todo_website/static/src/css/index.css'/>
+  </xpath>
+</template>
+
+
+<template id="hello" name="Hello World">
+  <h1>Hello World!</h1>
+</template>
+
+
+<template id="index" name="Todo List">
+<t t-call="website.layout">
+  <div id="wrap" class="container">
+    <h1>Todo Tasks</h1>
+
+      <!-- List of Tasks -->
+      <t t-foreach="tasks" t-as="task">
+      <div class="row">
+        <input type="checkbox" disabled="True"
+         t-att="{'checked': ''} if task.is_done else {}" />
+        <a t-attf-href="/todo/{{slug(task)}}">
+          <span t-field="task.name"
+                t-att-class="'todo-app-done' if task.is_done else ''"/>
+        </a>
+      </div>
+      </t>
+
+      <!-- Add a new Task -->
+      <div class="row">
+        <a href="/todo/add"
+           class="btn btn-primary btn-lg">Add</a>
+      </div>
+
+  </div>
+</t>
+</template>
+
+
+<template id="detail" name="Todo Task Detail">
+<t t-call="website.layout">
+  <div id="wrap" class="container">
+    <h1 t-field="task.name" />
+    <p>Responsible: <span t-field="task.user_id" /></p>
+    <p>Deadline: <span t-field="task.date_deadline" /></p>
+  </div>
+</t>
+</template>
+
+
+<template id="add" name="Add Todo">
+<t t-call="website.layout">
+<t t-set="additional_title">Edit Todo</t>
+<div id="wrap" class="container">
+  <div class="row">
+    <section id="forms">
+      <form method="post"
+	      class="s_website_form container-fluid form-horizontal"
+		  action="/website_form/"
+          data-model_name="todo.task"
+          data-success_page="/todo"
+          enctype="multipart/from-data" >
+
+        <!-- Description text field, required -->
+        <div class="form-group form-field o_website_form_required_custom">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label class="control-label" for="name">To do</label>
+          </div>
+          <div class="col-md-7 col-sm-8">
+            <input name="name" type="text" required="True"
+                   class="form-control o_website_form_input" />
+          </div>
+        </div>
+
+        <!-- Add an attachment field -->
+        <div class="form-group form-field">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label class="control-label" for="file_upload">Attach file</label>
+          </div>
+          <div class="col-md-7 col-sm-8">
+            <input name="file_upload" type="file"
+                   class="form-control o_website_form_input" />
+          </div>
+        </div>
+
+        <!-- Select User -->
+        <div class="form-group form-field">
+          <div class="col-md-3 col-sm-4 text-right">
+            <label class="control-label" for="user_id">For Person</label>
+          </div>
+          <div class="col-md-7 col-sm-8">
+            <select name="user_id"
+                       class="form-control o_website_form_input">
+                <option value="" />
+              <t t-foreach="users" t-as="user">
+                <option t-att-value="user.id">
+                  <t t-esc="user.name" />
+                </option>
+              </t>
+            </select>
+          </div>
+        </div>
+
+		<!-- Submit button -->
+        <div class="form-group">
+          <div class="col-md-offset-3 col-sm-offset-4 col-md-7 col-sm-8">
+            <a class="btn btn-primary btn-lg o_website_form_send">Save</a>
+            <span id="o_website_form_result"></span>
+          </div>
+        </div>
+
+      </form>
+    </section>
+  </div>
+</div>
+</t>
+</template>
+
+</odoo>
