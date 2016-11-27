@@ -5,37 +5,6 @@ Daniel Reis has worked in the IT industry for over 15 years, most of it for a mu
 ##Instructions and Navigations
 All of the code is organized into folders. Each folder starts with a number followed by the application name. For example, Chapter02.
 
-https://github.com/odoo/odoo/issues/3156#issuecomment-239111153
-http://serverfault.com/questions/270339/nginx-force-ssl-on-one-path-non-ssl-on-others
-
-
-# http -> https
-server {
-    listen 80;
-    server_name myodooserver.com;
-    # POS and the assets loaded over http should no be rewritten to avoid mix-content error
-    location ~ ^(?!/pos/|/web/binary/company_logo|/?[^/]*/website/action/|/web/webclient/|/web/content/).*$ {
-      if ($request_method != POST) {
-        # rewriting a POST request has no sense as the browser will do the request as GET
-        rewrite ^(.*)$ https://$host$1 permanent;
-      }
-      if ($request_method = POST) {
-        proxy_pass https://$host;
-      }
-    }
-    ...
-}
-
-server {
-    listen 443 default_server ssl;
-    server_name myodooserver.com;
-    # Force pos in http for the posbox
-    location ~ ^/pos/web {
-        rewrite ^(.*)$ http://$host:80$1 permanent;
-    }
-    ...
-} 
-
 The code will look like the following:
 ```
 @api.multi
