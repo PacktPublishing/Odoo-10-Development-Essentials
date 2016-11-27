@@ -1,4 +1,4 @@
-#Odoo 10 Development Essentials - Second Edition
+#Odoo 10 Development Essentials
 This is the code repository for [Odoo 10 Development Essentials - Second Edition](https://www.packtpub.com/big-data-and-business-intelligence/odoo-10-development-essentials-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781785884887), published by [Packt](www.packtpub.com). It contains all the supporting project files necessary to work through the book from start to finish.
 ## About the Book
 Daniel Reis has worked in the IT industry for over 15 years, most of it for a multinational consultancy firm, implementing business applications for a variety of sectors, including telco, banking, and industry. He has been working with Odoo (formerly OpenERP) since 2010, is an active contributor to the Odoo Community Association projects, and has been a regular speaker at the OpenDays annual conference.
