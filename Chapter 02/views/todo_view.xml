@@ -35,7 +35,7 @@
       <field name="name">To-do Task Tree</field>
       <field name="model">todo.task</field>
       <field name="arch" type="xml">
-        <tree colors="decoration-muted: is_done==True">
+        <tree decoration-muted="is_done == True">
           <field name="name"/>
           <field name="is_done"/>
         </tree>
