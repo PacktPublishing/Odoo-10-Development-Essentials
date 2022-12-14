@@ -1,3 +1,15 @@
+
+### Get this product for $5
+
+<i>Packt is having its biggest sale of the year. Get this eBook or any other book, video, or course that you like just for $5 each</i>
+
+
+<b><p align='center'>[Buy now](https://packt.link/9781789532470)</p></b>
+
+
+<b><p align='center'>[Buy similar titles for just $5](https://subscription.packtpub.com/search)</p></b>
+
+
 #Odoo 10 Development Essentials
 This is the code repository for [Odoo 10 Development Essentials](https://www.packtpub.com/big-data-and-business-intelligence/odoo-10-development-essentials?utm_source=github&utm_medium=repository&utm_campaign=9781785884887), published by [Packt](www.packtpub.com). It contains all the supporting project files necessary to work through the book from start to finish.
 ## About the Book
